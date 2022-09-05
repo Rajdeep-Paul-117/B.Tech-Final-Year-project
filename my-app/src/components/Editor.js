@@ -6,7 +6,7 @@ import {v4 as uuid} from 'uuid'
 
 function Editor() {
   const [sourceText, setsourceText] = useState("")
-
+  const [disable, setDisable] = React.useState(false);
   const baseTextHandler=(e)=>{
     console.log(e.target.value)
   }
@@ -15,6 +15,7 @@ function Editor() {
   }
   
   const translateText=(e)=>{
+    setDisable(true);
     const constructed_url = 'https://api.cognitive.microsofttranslator.com/translate'
     const params = {
       'api-version': '3.0',
@@ -66,7 +67,10 @@ function Editor() {
       </Grid>
     </Grid>
     <Box mt={3} mb={3}>
-    <Button variant="contained" onClick={translateText}>Translate</Button>
+    <Button disabled={disable} variant="contained" onClick={translateText}>Translate</Button>
+    </Box>
+    <Box mt={3} mb={3}>
+    <Button  variant="contained" onClick={translateText}>Compare</Button>
     </Box>
     </Box>
   )

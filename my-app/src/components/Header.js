@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 
 function Header() {
   return (
-    <AppBar position="static">
+    <AppBar position="sticky">
     <Toolbar>
       <IconButton
         size="large"

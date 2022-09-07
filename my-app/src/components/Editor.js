@@ -3,15 +3,24 @@ import { Box,Grid, TextField,Button} from '@mui/material'
 import { useState } from 'react'
 import axios from 'axios'
 import {v4 as uuid} from 'uuid'
+import PopUp from './PopUp'
 
 function Editor() {
   const [sourceText, setsourceText] = useState("")
+  const [baseText, setbaseText] = useState("")
   const [disable, setDisable] = React.useState(false);
+  const [baseArticleResult, setbaseArticleResult] = useState({})
+  const [regionalArticleResult, setregionalArticleResult] = useState({})
+  const [showResult, setshowResult] = useState(false)
+
   const baseTextHandler=(e)=>{
-    console.log(e.target.value)
+    setbaseText(e.target.value)
   }
   const sourceTextHandler=(e)=>{
     setsourceText(e.target.value)
+  }
+  const resultClose=(e)=>{
+    setshowResult(false)
   }
   
   const translateText=(e)=>{
@@ -29,7 +38,7 @@ function Editor() {
     }
     const body = [{
       'text': sourceText
-  }]
+    }]
     axios.post(constructed_url,body,{headers:headers,params:params})
     .then(res=>{
       setsourceText(res.data[0].translations[0].text)
@@ -37,6 +46,22 @@ function Editor() {
     .catch(error=>{
       console.log(error)
     })
+  }
+  const compareText=(e)=>{
+    const url='https://5000-rajdeeppaul-btechfinaly-a9zgjyikrbd.ws-us63.gitpod.io/comp'
+  
+    const body = [{
+      'text': baseText
+    },
+    {
+      'text': sourceText
+    }
+  ]
+    axios.post(url,body).then(res=>{
+      setbaseArticleResult(res.data[0])
+      setregionalArticleResult(res.data[1])  
+      setshowResult(true)
+    }).catch(err=>console.log(err))
   }
   
   return (
@@ -70,8 +95,14 @@ function Editor() {
     <Button disabled={disable} variant="contained" onClick={translateText}>Translate</Button>
     </Box>
     <Box mt={3} mb={3}>
-    <Button  variant="contained" onClick={translateText}>Compare</Button>
+    <Button  variant="contained" onClick={compareText}>Compare</Button>
     </Box>
+    {showResult? <PopUp 
+    open={showResult} 
+    onClose={resultClose}
+    result1={baseArticleResult}
+    result2={regionalArticleResult} 
+    />:null}
     </Box>
   )
 }

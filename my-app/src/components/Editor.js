@@ -48,8 +48,8 @@ function Editor() {
     })
   }
   const compareText=(e)=>{
-    const url='https://5000-rajdeeppaul-btechfinaly-a9zgjyikrbd.ws-us63.gitpod.io/comp'
-  
+    const url='https://5000-rajdeeppaul-btechfinaly-a9zgjyikrbd.ws-us64.gitpod.io/comp-corenlp'
+
     const body = [{
       'text': baseText
     },
@@ -58,10 +58,25 @@ function Editor() {
     }
   ]
     axios.post(url,body).then(res=>{
+      console.log(res)
       setbaseArticleResult(res.data[0])
       setregionalArticleResult(res.data[1])  
       setshowResult(true)
     }).catch(err=>console.log(err))
+    
+    //var bodyFormData = new FormData();
+    // bodyFormData.append("rahul",'');
+    // const url1='https://corenlp.run/'
+    // const prop1={"properties":
+    // {"annotators": "tokenize,ssplit,ner", "date": "2022-09-07T17:51:46"}
+    // }
+    // axios.post(url1,new URLSearchParams({
+    //   [baseText]:''
+    // }),{params:prop1})
+    // .then(res=>console.log(res))
+    // .catch(
+    //   err=>console.log(err)
+    // )
   }
   
   return (

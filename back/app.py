@@ -4,8 +4,8 @@ import stanza
 import json
 import requests
 proxies={}
-#proxies = {'http': 'http://172.16.199.41:8080', 'https': 'http://172.16.199.41:8080'}
-stanza.download('en')
+# proxies = {'http': 'http://172.16.199.41:8080', 'https': 'http://172.16.199.41:8080'}
+# stanza.download('en')
 
 app = Flask(__name__)
 CORS(app)
@@ -43,28 +43,37 @@ def corenlp():
         prop={"properties":
                 '{"annotators": "tokenize,ssplit,ner", "date": "2022-09-10T17:51:46"}'
                 }
-        doc1 = requests.post(url,data={task_content1:''},params=prop)
-        doc1= doc1.json()["sentences"][0]["entitymentions"]
-    
-        doc2 = requests.post(url,data={task_content2:''},params=prop)
-        doc2= doc2.json()["sentences"][0]["entitymentions"]
-        
+
         result1 = dict()
         result2 = dict()
 
-        jsonified_text=[]
-        for x in doc1:
-            if x['ner']=='TIME':
-                result1.setdefault(x['ner'],[]).append(x['normalizedNER'])
-            else:
-                result1.setdefault(x['ner'],[]).append(x['text'])
-        
-        for x in doc2:
-            if x['ner']=='TIME':
-                result2.setdefault(x['ner'],[]).append(x['normalizedNER'])
-            else:
-                result2.setdefault(x['ner'],[]).append(x['text'])
-            
+        doc1 = requests.post(url,data={task_content1:''},params=prop)
+        doc1= doc1.json()["sentences"]
+        for y in doc1:
+            for x in y["entitymentions"]:
+                if x['ner']=='DATE':
+                    result1.setdefault(x['ner'],[]).append(x['normalizedNER'])
+                elif x['ner']=='TIME':
+                    result1.setdefault(x['ner'],[]).append(x['normalizedNER'][11:16])
+                elif x['ner']=='NUMBER':
+                    result1.setdefault(x['ner'],[]).append(x['normalizedNER'].split('.')[0])
+                else:
+                    result1.setdefault(x['ner'],[]).append(x['text'])
+        # print(result1)
+
+        doc2 = requests.post(url,data={task_content2:''},params=prop)
+        doc2= doc2.json()["sentences"]
+        for y in doc2:
+            for x in y["entitymentions"]:
+                if x['ner']=='DATE':
+                    result2.setdefault(x['ner'],[]).append(x['normalizedNER'])
+                elif x['ner']=='TIME':
+                    result2.setdefault(x['ner'],[]).append(x['normalizedNER'][11:16])
+                elif x['ner']=='NUMBER':
+                    result2.setdefault(x['ner'],[]).append(x['normalizedNER'].split('.')[0])
+                else:
+                    result2.setdefault(x['ner'],[]).append(x['text'])
+                
         return [result1,result2]
 if __name__ == '__main__':
     app.run(debug=True)

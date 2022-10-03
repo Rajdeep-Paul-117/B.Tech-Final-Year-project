@@ -48,8 +48,8 @@ function Editor() {
     })
   }
   const compareText=(e)=>{
-    const url='https://5000-rajdeeppaul-btechfinaly-a9zgjyikrbd.ws-us64.gitpod.io/comp-corenlp'
-
+    // const url='https://5000-rajdeeppaul-btechfinaly-a9zgjyikrbd.ws-us64.gitpod.io/comp-corenlp'
+    const url='http://localhost:5000/comp-corenlp'
     const body = [{
       'text': baseText
     },

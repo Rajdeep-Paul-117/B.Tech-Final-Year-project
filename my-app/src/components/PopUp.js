@@ -23,21 +23,43 @@ function PopUp(props) {
           {
           Object.keys(result1).map((key,index) => (
             <TableRow key={index}>
+              
               <TableCell component="th" scope="row">
                 {key}
               </TableCell>
-              <TableCell align="right">{result1[key]}</TableCell>
-              <TableCell align="right">{result2[key]?result2[key]:""}</TableCell>
+
+              <TableCell align="left">
+                {result1[key].map(x => (
+                  <li>{x}</li>
+                ))}
+              </TableCell>
+
+              <TableCell align="left">
+                  {
+                    result2[key]?
+                    result2[key].map(x => (
+                      <li>{x}</li>
+                    )):result2[key]
+                  }
+              </TableCell>
+            
             </TableRow>
           ))}
             {
           Object.keys(result2).filter((key)=>result1[key]==null).map((key,index) => (
             <TableRow key={index}>
+
               <TableCell component="th" scope="row">
                 {key}
               </TableCell>
-              <TableCell align="right">{""}</TableCell>
-              <TableCell align="right">{result2[key]}</TableCell>
+
+              <TableCell align="left">{""}</TableCell>
+              <TableCell align="left">
+                {result2[key].map(y => (
+                  <li>{y}</li>
+                ))}
+              </TableCell>
+
             </TableRow>
           ))}
         </TableBody>

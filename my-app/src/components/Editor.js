@@ -90,6 +90,22 @@ function Editor() {
     
   }
   
+  const bertSimilarity=(e)=>{
+    const url='https://5000-rajdeeppaul-btechfinaly-a9zgjyikrbd.ws-us70.gitpod.io/bert-similarity'
+    const body = [{
+      'text': baseText
+    },
+    {
+      'text': sourceText
+    }
+  ]
+    axios.post(url,body).then(res=>{
+      setcalculation(res.data)
+      setshowSimilarity(true)
+    }).catch(err=>console.log(err))
+    
+  }
+
   return (
     <Box >
     <Grid container mt={5}>
@@ -132,6 +148,15 @@ function Editor() {
 
     <Box mt={3} mb={3}>
     <Button  variant="contained" onClick={similarity}>Calculate similarity</Button>
+    </Box>
+    {showSimilarity? <Result 
+    open={showSimilarity} 
+    onClose={similarityClose}
+    result={calculation}
+    />:null}
+    
+    <Box mt={3} mb={3}>
+    <Button  variant="contained" onClick={bertSimilarity}>Calculate bert similarity</Button>
     </Box>
     {showSimilarity? <Result 
     open={showSimilarity} 

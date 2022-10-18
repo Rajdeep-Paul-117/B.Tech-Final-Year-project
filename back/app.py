@@ -4,12 +4,20 @@ import stanza
 import json
 import requests
 import cosine_similarity
+import bert_similarity
 proxies={}
 # proxies = {'http': 'http://172.16.199.41:8080', 'https': 'http://172.16.199.41:8080'}
 # stanza.download('en')
 
 app = Flask(__name__)
 CORS(app)
+
+
+@app.route('/bert-similarity', methods=['POST'])
+def bertSimilarity():
+    task_content1 = request.get_json()[0].get('text')
+    task_content2 = request.get_json()[1].get('text')
+    return bert_similarity.similarity(task_content1, task_content2)
 
 
 @app.route('/similarity', methods=['POST'])

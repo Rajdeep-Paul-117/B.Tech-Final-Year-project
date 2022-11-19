@@ -4,14 +4,17 @@ import { useState } from 'react'
 import axios from 'axios'
 import {v4 as uuid} from 'uuid'
 import PopUp from './PopUp'
+import Result from './Result'
 
 function Editor() {
   const [sourceText, setsourceText] = useState("")
   const [baseText, setbaseText] = useState("")
   const [disable, setDisable] = React.useState(false);
   const [baseArticleResult, setbaseArticleResult] = useState({})
+  const [calculation, setcalculation] = useState({})
   const [regionalArticleResult, setregionalArticleResult] = useState({})
-  const [showResult, setshowResult] = useState(false)
+  const [showResult, setshowResult] = useState(false) 
+  const [showSimilarity, setshowSimilarity] = useState(false)
 
   const baseTextHandler=(e)=>{
     setbaseText(e.target.value)
@@ -22,7 +25,11 @@ function Editor() {
   const resultClose=(e)=>{
     setshowResult(false)
   }
-  
+
+  const similarityClose=(e)=>{
+    setshowSimilarity(false)
+  }
+
   const translateText=(e)=>{
     setDisable(true);
     const constructed_url = 'https://api.cognitive.microsofttranslator.com/translate'
@@ -48,8 +55,8 @@ function Editor() {
     })
   }
   const compareText=(e)=>{
-    const url='https://5000-rajdeeppaul-btechfinaly-a9zgjyikrbd.ws-us64.gitpod.io/comp-corenlp'
-
+    const url='https://5000-rajdeeppaul-btechfinaly-a9zgjyikrbd.ws-us70.gitpod.io/comp-corenlp'
+    //const url='http://localhost:5000/comp-corenlp'
     const body = [{
       'text': baseText
     },
@@ -64,21 +71,41 @@ function Editor() {
       setshowResult(true)
     }).catch(err=>console.log(err))
     
-    //var bodyFormData = new FormData();
-    // bodyFormData.append("rahul",'');
-    // const url1='https://corenlp.run/'
-    // const prop1={"properties":
-    // {"annotators": "tokenize,ssplit,ner", "date": "2022-09-07T17:51:46"}
-    // }
-    // axios.post(url1,new URLSearchParams({
-    //   [baseText]:''
-    // }),{params:prop1})
-    // .then(res=>console.log(res))
-    // .catch(
-    //   err=>console.log(err)
-    // )
+  }
+
+  const similarity=(e)=>{
+    const url='https://5000-rajdeeppaul-btechfinaly-a9zgjyikrbd.ws-us70.gitpod.io/similarity'
+    const body = [{
+      'text': baseText
+    },
+    {
+      'text': sourceText
+    }
+  ]
+    axios.post(url,body).then(res=>{
+      console.log(res) 
+      setcalculation(res.data)
+      setshowSimilarity(true)
+    }).catch(err=>console.log(err))
+    
   }
   
+  const bertSimilarity=(e)=>{
+    const url='https://5000-rajdeeppaul-btechfinaly-a9zgjyikrbd.ws-us70.gitpod.io/bert-similarity'
+    const body = [{
+      'text': baseText
+    },
+    {
+      'text': sourceText
+    }
+  ]
+    axios.post(url,body).then(res=>{
+      setcalculation(res.data)
+      setshowSimilarity(true)
+    }).catch(err=>console.log(err))
+    
+  }
+
   return (
     <Box >
     <Grid container mt={5}>
@@ -117,6 +144,24 @@ function Editor() {
     onClose={resultClose}
     result1={baseArticleResult}
     result2={regionalArticleResult} 
+    />:null}
+
+    <Box mt={3} mb={3}>
+    <Button  variant="contained" onClick={similarity}>Calculate similarity</Button>
+    </Box>
+    {showSimilarity? <Result 
+    open={showSimilarity} 
+    onClose={similarityClose}
+    result={calculation}
+    />:null}
+    
+    <Box mt={3} mb={3}>
+    <Button  variant="contained" onClick={bertSimilarity}>Calculate bert similarity</Button>
+    </Box>
+    {showSimilarity? <Result 
+    open={showSimilarity} 
+    onClose={similarityClose}
+    result={calculation}
     />:null}
     </Box>
   )

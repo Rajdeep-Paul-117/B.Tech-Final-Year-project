@@ -55,7 +55,7 @@ function Editor() {
     })
   }
   const compareText=(e)=>{
-    const url='https://5000-rajdeeppaul-btechfinaly-a9zgjyikrbd.ws-us70.gitpod.io/comp-corenlp'
+    const url='https://5000-rajdeeppaul-btechfinaly-a9zgjyikrbd.ws-us77.gitpod.io/comp-corenlp'
     //const url='http://localhost:5000/comp-corenlp'
     const body = [{
       'text': baseText
@@ -74,7 +74,7 @@ function Editor() {
   }
 
   const similarity=(e)=>{
-    const url='https://5000-rajdeeppaul-btechfinaly-a9zgjyikrbd.ws-us70.gitpod.io/similarity'
+    const url='https://5000-rajdeeppaul-btechfinaly-a9zgjyikrbd.ws-us77.gitpod.io/similarity'
     const body = [{
       'text': baseText
     },
@@ -91,7 +91,7 @@ function Editor() {
   }
   
   const bertSimilarity=(e)=>{
-    const url='https://5000-rajdeeppaul-btechfinaly-a9zgjyikrbd.ws-us70.gitpod.io/bert-similarity'
+    const url='https://5000-rajdeeppaul-btechfinaly-a9zgjyikrbd.ws-us77.gitpod.io/bert-similarity'
     const body = [{
       'text': baseText
     },
@@ -134,7 +134,7 @@ function Editor() {
       </Grid>
     </Grid>
     <Box mt={3} mb={3}>
-    <Button disabled={disable} variant="contained" onClick={translateText}>Translate</Button>
+    <Button  variant="contained" onClick={translateText}>Translate</Button>
     </Box>
     <Box mt={3} mb={3}>
     <Button  variant="contained" onClick={compareText}>Compare</Button>

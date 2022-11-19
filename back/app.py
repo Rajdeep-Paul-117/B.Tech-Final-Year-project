@@ -32,7 +32,6 @@ def index():
     if request.method == 'POST':
         task_content1 = request.get_json()[0].get('text')
         task_content2 = request.get_json()[1].get('text')
-        
         nlp = stanza.Pipeline(lang='en',proxies=proxies,processors='tokenize,ner')
         doc1 = nlp(task_content1)
         doc2 = nlp(task_content2)
